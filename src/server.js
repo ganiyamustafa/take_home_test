@@ -54,6 +54,9 @@ const init = async () => {
         tokenManager: TokenManager,
         validator: AuthenticationsValidator,
       },
+      routes: {
+        prefix: '/api/v1'
+      }
     },
   ]);
 
