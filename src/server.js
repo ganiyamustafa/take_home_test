@@ -19,7 +19,7 @@ const init = async () => {
 
   app.use(express.json());
 
-  authenticationRoutes(app, {authenticationsService, usersService})
+  authenticationRoutes(app, {authenticationsService, usersService, tokenManager: TokenManager, authenticationsValidator: AuthenticationsValidator})
 
   app.listen(port, () => {
     console.log(`Server berjalan pada http://${host}:${port}`);

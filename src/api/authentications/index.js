@@ -1,12 +1,10 @@
-const TokenManager = require("../../tokenize/TokenManager")
-const AuthenticationsValidator = require("../../validator/authentications")
 const AuthenticationsHandler = require("./handler")
 const routes = require("./router")
 
 module.exports = (app, { 
-  authenticationsService, usersService
+  authenticationsService, usersService, tokenManager, authenticationsValidator
 }) => {
   app.use("/api/v1/authentications", routes(new AuthenticationsHandler(
-    authenticationsService, usersService, TokenManager, AuthenticationsValidator
+    authenticationsService, usersService, tokenManager, authenticationsValidator
   )))
 }
