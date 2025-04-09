@@ -1,21 +1,12 @@
-const AuthenticationHandler = require('./handler');
-const routes = require('./router');
+const TokenManager = require("../../tokenize/TokenManager")
+const AuthenticationsValidator = require("../../validator/authentications")
+const AuthenticationsHandler = require("./handler")
+const routes = require("./router")
 
-module.exports = {
-  name: 'authentications',
-  version: '1.0.0',
-  register: async (server, {
-    authenticationsService,
-    usersService,
-    tokenManager,
-    validator,
-  }) => {
-    const authenticationsHandler = new AuthenticationHandler(
-      authenticationsService,
-      usersService,
-      tokenManager,
-      validator,
-    );
-    server.route(routes(authenticationsHandler));
-  },
-};
+module.exports = (app, { 
+  authenticationsService, usersService
+}) => {
+  app.use("/api/v1/authentications", routes(new AuthenticationsHandler(
+    authenticationsService, usersService, TokenManager, AuthenticationsValidator
+  )))
+}

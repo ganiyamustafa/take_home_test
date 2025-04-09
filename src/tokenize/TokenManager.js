@@ -1,15 +1,12 @@
-const Jwt = require('@hapi/jwt');
+const jwt = require('jsonwebtoken');
 const InvariantError = require('../exceptions/InvariantError');
 
 const TokenManager = {
-  generateAccessToken: (payload) => Jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY),
-  generateRefreshToken: (payload) => Jwt.token.generate(payload, process.env.REFRESH_TOKEN_KEY),
+  generateAccessToken: (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_KEY),
+  generateRefreshToken: (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN_KEY),
   verifyRefreshToken: (refreshToken) => {
     try {
-      const artifacts = Jwt.token.decode(refreshToken);
-      Jwt.token.verifySignature(artifacts, process.env.REFRESH_TOKEN_KEY);
-      const { payload } = artifacts.decoded;
-      return payload;
+      return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
     } catch (error) {
       throw new InvariantError('Refresh token tidak valid');
     }

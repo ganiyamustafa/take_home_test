@@ -1,10 +1,8 @@
-const clientError = (error, h) => {
-  const response = h.response({
+const clientError = (error, res) => {
+  return res.status(error.statusCode).send({
     status: 'fail',
     message: error.message,
   });
-  response.code(error.statusCode);
-  return response;
 };
 
 module.exports = clientError;

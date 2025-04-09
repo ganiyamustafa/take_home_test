@@ -19,7 +19,7 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new AuthenticationError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Invalid Credential');
     }
 
     const { id, password: hashedPassword } = result.rows[0];
@@ -27,7 +27,7 @@ class UsersService {
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new AuthenticationError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Invalid Credential');
     }
 
     return id;
@@ -42,7 +42,7 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (result.rowCount) {
-      throw new InvariantError('Username sudah digunakan');
+      throw new InvariantError('Email has used');
     }
   }
 
@@ -62,10 +62,51 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Gagal menambahkan user');
+      throw new InvariantError('Failed to add user');
     }
 
     return result.rows[0].id;
+  }
+
+  async updateUser(id, {
+    password
+  }) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedAt = new Date().toISOString();
+
+    const query = {
+      text: 'UPDATE users SET password=$1, updated_at=$2 WHERE id=$3 RETURNING id',
+      values: [hashedPassword, updatedAt, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Failed to update user');
+    }
+
+    return result.rows[0].id;
+  }
+
+  async deleteUser(id) {
+    const query = {
+      text: 'DELETE from users WHERE id=$1 RETURNING id',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Failed to delete user');
+    }
+
+    return result.rows[0].id;
+  }
+
+  async getSongs() {
+    const result = await this._pool.query('SELECT id, email FROM users');
+
+    return result.rows;
   }
 }
 
