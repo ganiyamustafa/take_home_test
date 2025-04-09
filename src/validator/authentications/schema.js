@@ -5,6 +5,11 @@ const PostAuthenticationsPayloadSchema = joi.object({
   password: joi.string().required(),
 });
 
+const PostAuthenticationRegistersPayloadSchema = joi.object({
+  email: joi.string().required(),
+  password: joi.string().required(),
+});
+
 const PutAuthenticationsPayloadSchema = joi.object({
   refreshToken: joi.string().required(),
 });
@@ -15,6 +20,7 @@ const DeleteAuthenticationsPayloadSchema = joi.object({
 
 module.exports = {
   PostAuthenticationsPayloadSchema,
+  PostAuthenticationRegistersPayloadSchema,
   PutAuthenticationsPayloadSchema,
   DeleteAuthenticationsPayloadSchema,
 };

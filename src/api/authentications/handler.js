@@ -9,9 +9,10 @@ class AuthenticationsHandler {
     this._tokenManager = tokenManager;
     this._validator = validator;
 
-    this.postAuthenticationHandler = this.postAuthenticationHandler.bind(this);
-    this.putAuthenticationHandler = this.putAuthenticationHandler.bind(this);
-    this.deleteAuthenticationHandler = this.deleteAuthenticationHandler.bind(this);
+    this.postAuthenticationLoginHandler = this.postAuthenticationLoginHandler.bind(this);
+    this.postAuthenticationRegisterHandler = this.postAuthenticationRegisterHandler.bind(this);
+    this.putAuthenticationRefreshHandler = this.putAuthenticationRefreshHandler.bind(this);
+    this.deleteAuthenticationLogoutHandler = this.deleteAuthenticationLogoutHandler.bind(this);
   }
 
   async postAuthenticationLoginHandler(request, h) {
@@ -44,7 +45,7 @@ class AuthenticationsHandler {
 
   async postAuthenticationRegisterHandler(request, h) {
     try {
-      this._validator.validateUserPayload(request.payload);
+      this._validator.validatePostAuthenticationRegisterPayload(request.payload);
 
       const { email } = request.payload;
 

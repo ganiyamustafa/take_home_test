@@ -3,33 +3,15 @@ require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 
-const songs = require('./api/songs');
-const SongsService = require('./service/postgre/SongsService');
-const SongValidator = require('./validator/song');
-
-const users = require('./api/users');
-const UsersService = require('./service/postgre/UsersServuce');
-const UserValidator = require('./validator/users');
-
 const authentications = require('./api/authentications');
 const AuthenticationsService = require('./service/postgre/AuthenticationsService');
+const UsersService = require('./service/postgre/UsersServuce');
 const AuthenticationsValidator = require('./validator/authentications');
 const TokenManager = require('./tokenize/TokenManager');
 
-const playlists = require('./api/playlists');
-const PlaylistsService = require('./service/postgre/PlaylistsService');
-const PlaylistValidator = require('./validator/playlists');
-
-const collaborations = require('./api/collaborations');
-const CollaborationsService = require('./service/postgre/CollaborationsService');
-const CollaborationValidator = require('./validator/colabolarations');
-
 const init = async () => {
-  const songsService = new SongsService();
-  const collaborationsService = new CollaborationsService();
-  const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const playlistsService = new PlaylistsService(collaborationsService);
+  const usersService = new UsersService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -71,35 +53,6 @@ const init = async () => {
         usersService,
         tokenManager: TokenManager,
         validator: AuthenticationsValidator,
-      },
-    },
-    {
-      plugin: songs,
-      options: {
-        service: songsService,
-        validator: SongValidator,
-      },
-    },
-    {
-      plugin: users,
-      options: {
-        service: usersService,
-        validator: UserValidator,
-      },
-    },
-    {
-      plugin: playlists,
-      options: {
-        service: playlistsService,
-        validator: PlaylistValidator,
-      },
-    },
-    {
-      plugin: collaborations,
-      options: {
-        collaborationsService,
-        playlistsService,
-        validator: CollaborationValidator,
       },
     },
   ]);
