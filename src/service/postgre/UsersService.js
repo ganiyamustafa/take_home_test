@@ -122,11 +122,9 @@ class UsersService {
     };
 
     const result = await this._pool.query(query);
-    const total = Number(
-        (await this._pool.query("SELECT count(*) from users")).rows[0].count
-      );
+    const total = (await this._pool.query("SELECT count(*) from users")).rows[0].count;
 
-    return getUsersSerializer(result.rows, page, limit, total)
+    return getUsersSerializer(result.rows, Number(page), Number(limit), Number(total))
   }
 
   async getUserByID(id) {

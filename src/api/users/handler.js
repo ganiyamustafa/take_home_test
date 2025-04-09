@@ -16,12 +16,13 @@ class UsersHandler {
 
   async getUsersHandler(req, res) {
     try {
-      const users = await this._usersService.getUsers(req.query);
+      const data = await this._usersService.getUsers(req.query);
 
       return res.send({
         status: 'success',
         message: 'Success Get Users',
-        data: users,
+        data: data.users,
+        meta: data.meta
       });
     } catch (error) {
       if (error instanceof ClientError) {
