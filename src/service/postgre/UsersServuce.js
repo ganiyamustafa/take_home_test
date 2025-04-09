@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const { nanoid } = require('nanoid');
+const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 const InvariantError = require('../../exceptions/InvariantError');
@@ -49,7 +49,7 @@ class UsersService {
   async addUser({
     email, password
   }) {
-    const id = nanoid(16);
+    const id = uuidv4();
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;

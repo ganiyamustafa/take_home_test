@@ -9,13 +9,13 @@ class AuthenticationsHandler {
     this._tokenManager = tokenManager;
     this._validator = validator;
 
-    this.postAuthenticationLoginHandler = this.postAuthenticationLoginHandler.bind(this);
-    this.postAuthenticationRegisterHandler = this.postAuthenticationRegisterHandler.bind(this);
-    this.putAuthenticationRefreshHandler = this.putAuthenticationRefreshHandler.bind(this);
-    this.deleteAuthenticationLogoutHandler = this.deleteAuthenticationLogoutHandler.bind(this);
+    this.authenticationLoginHandler = this.authenticationLoginHandler.bind(this);
+    this.authenticationRegisterHandler = this.authenticationRegisterHandler.bind(this);
+    this.authenticationRefreshHandler = this.authenticationRefreshHandler.bind(this);
+    this.authenticationLogoutHandler = this.authenticationLogoutHandler.bind(this);
   }
 
-  async postAuthenticationLoginHandler(request, h) {
+  async authenticationLoginHandler(request, h) {
     try {
       this._validator.validatePostAuthenticationPayload(request.payload);
 
@@ -43,7 +43,7 @@ class AuthenticationsHandler {
     }
   }
 
-  async postAuthenticationRegisterHandler(request, h) {
+  async authenticationRegisterHandler(request, h) {
     try {
       this._validator.validatePostAuthenticationRegisterPayload(request.payload);
 
@@ -51,8 +51,8 @@ class AuthenticationsHandler {
 
       await this._usersService.checkEmailIfExist(email);
       const uId = await this._usersService.addUser(request.payload);
-      const accessToken = this._tokenManager.generateAccessToken({ userId });
-      const refreshToken = this._tokenManager.generateRefreshToken({ userId });
+      const accessToken = this._tokenManager.generateAccessToken({ uId });
+      const refreshToken = this._tokenManager.generateRefreshToken({ uId });
 
       const response = h.response({
         status: 'success',
@@ -67,14 +67,14 @@ class AuthenticationsHandler {
       return response;
     } catch (error) {
       if (error instanceof ClientError) {
-        return requestClientError(error, h);
+        return clientError(error, h);
       }
 
-      return requestServerError(error, h);
+      return serverError(error, h);
     }
   }
 
-  async putAuthenticationRefreshHandler(request, h) {
+  async authenticationRefreshHandler(request, h) {
     try {
       this._validator.validatePutAuthenticationPayload(request.payload);
       const { refreshToken } = request.payload;
@@ -97,7 +97,7 @@ class AuthenticationsHandler {
     }
   }
 
-  async deleteAuthenticationLogoutHandler(request, h) {
+  async authenticationLogoutHandler(request, h) {
     try {
       this._validator.validateDeleteAuthenticationPayload(request.payload);
       const { refreshToken } = request.payload;
