@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthenticationError = require('../../exceptions/AuthenticationError');
-const { metaSerializer } = require('../../serializer/utils');
+const { getUsersSerializer } = require('../../serializer/user');
 
 class UsersService {
   constructor() {
@@ -126,7 +126,7 @@ class UsersService {
         (await this._pool.query("SELECT count(*) from users")).rows[0].count
       );
 
-    return {users: result.rows, meta: metaSerializer({page, limit, total})};
+    return getUsersSerializer(result.rows, page, limit, total)
   }
 
   async getUserByID(id) {
