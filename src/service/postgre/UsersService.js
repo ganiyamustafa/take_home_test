@@ -1,9 +1,11 @@
 const { Pool } = require('pg');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate } = require('uuid');
 const bcrypt = require('bcrypt');
 
 const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthenticationError = require('../../exceptions/AuthenticationError');
+const { metaSerializer } = require('../../serializer/utils');
 
 class UsersService {
   constructor() {
@@ -47,7 +49,7 @@ class UsersService {
   }
 
   async addUser({
-    email, password
+    email, password, name
   }) {
     const id = uuidv4();
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -55,8 +57,8 @@ class UsersService {
     const updatedAt = createdAt;
 
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5) RETURNING id',
-      values: [id, email, hashedPassword, createdAt, updatedAt],
+      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+      values: [id, email, hashedPassword, createdAt, updatedAt, name],
     };
 
     const result = await this._pool.query(query);
@@ -69,26 +71,33 @@ class UsersService {
   }
 
   async updateUser(id, {
-    password
+    name
   }) {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (!validate(id)) {
+      throw new InvariantError("ID must be uuid")
+    }
+
     const updatedAt = new Date().toISOString();
 
     const query = {
-      text: 'UPDATE users SET password=$1, updated_at=$2 WHERE id=$3 RETURNING id',
-      values: [hashedPassword, updatedAt, id],
+      text: 'UPDATE users SET name=$1, updated_at=$2 WHERE id=$3 RETURNING id',
+      values: [name, updatedAt, id],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Failed to update user');
+      throw new NotFoundError('User Not Found');
     }
 
     return result.rows[0].id;
   }
 
   async deleteUser(id) {
+    if (!validate(id)) {
+      throw new InvariantError("ID must be uuid")
+    }
+
     const query = {
       text: 'DELETE from users WHERE id=$1 RETURNING id',
       values: [id],
@@ -97,16 +106,46 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('Failed to delete user');
+      throw new NotFoundError('User Not Found');
     }
 
     return result.rows[0].id;
   }
 
-  async getSongs() {
-    const result = await this._pool.query('SELECT id, email FROM users');
+  async getUsers({ sort="asc", orderBy="created_at", page=1, limit=10 } = {}) {
+    // for pagination
+    const offset = (page - 1) * limit
 
-    return result.rows;
+    const query = {
+      text: `SELECT id, email, name FROM users ORDER BY ${orderBy} ${sort} LIMIT $1 OFFSET $2`,
+      values: [limit, offset],
+    };
+
+    const result = await this._pool.query(query);
+    const total = Number(
+        (await this._pool.query("SELECT count(*) from users")).rows[0].count
+      );
+
+    return {users: result.rows, meta: metaSerializer({page, limit, total})};
+  }
+
+  async getUserByID(id) {
+    if (!validate(id)) {
+      throw new InvariantError("ID must be uuid")
+    }
+
+    const query = {
+      text: 'SELECT id, email, name FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User Not Found');
+    }
+
+    return result.rows[0];
   }
 }
 

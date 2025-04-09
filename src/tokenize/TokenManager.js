@@ -8,7 +8,14 @@ const TokenManager = {
     try {
       return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
     } catch (error) {
-      throw new InvariantError('Refresh token tidak valid');
+      throw new InvariantError('Refresh token Invalid');
+    }
+  },
+  verifyAccessToken: (accessToken) => {
+    try {
+      return jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
+    } catch (error) {
+      throw new InvariantError('Access Token Invalid');
     }
   },
 };

@@ -4,9 +4,12 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const authenticationRoutes = require('./api/authentications');
+const userRoutes = require('./api/users')
+
 const AuthenticationsService = require('./service/postgre/AuthenticationsService');
-const UsersService = require('./service/postgre/UsersServuce');
+const UsersService = require('./service/postgre/UsersService');
 const AuthenticationsValidator = require('./validator/authentications');
+const UsersValidator = require('./validator/users');
 const TokenManager = require('./tokenize/TokenManager');
 
 const init = async () => {
@@ -20,6 +23,7 @@ const init = async () => {
   app.use(express.json());
 
   authenticationRoutes(app, {authenticationsService, usersService, tokenManager: TokenManager, authenticationsValidator: AuthenticationsValidator})
+  userRoutes(app, {usersService,tokenManager: TokenManager, usersValidator: UsersValidator})
 
   app.listen(port, () => {
     console.log(`Server berjalan pada http://${host}:${port}`);

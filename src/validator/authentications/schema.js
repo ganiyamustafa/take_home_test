@@ -7,6 +7,7 @@ const PostAuthenticationsPayloadSchema = joi.object({
 
 const PostAuthenticationRegistersPayloadSchema = joi.object({
   email: joi.string().required(),
+  name: joi.string().required(),
   password: joi.string().required(),
 });
 
