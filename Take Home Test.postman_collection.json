@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "644114b1-d98a-46e2-aa90-8129555d581e",
+		"name": "Take Home Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15437108"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ofgh@ofgh.com\",\n    \"password\": \"nauinusbuain\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/api/v1/authentications/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testing@gmail.com\",\n    \"password\": \"testing443434\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/api/v1/authentications/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/api/v1/authentications/refresh"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/users?page=1&limit=10",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "orderBy",
+									"value": "created_at",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "asc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/users/:id",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"testing edited\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/api/v1/users/:id",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/users/:id",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "uuid user"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Real Data",
+			"item": [
+				{
+					"name": "Get Data By Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/real-datas/name/:name",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"real-datas",
+								"name",
+								":name"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Data By NIM",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/real-datas/nim/:nim",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"real-datas",
+								"nim",
+								":nim"
+							],
+							"variable": [
+								{
+									"key": "nim",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Data By YMD",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjc4YzFhOS1jMTg4LTRlYmMtODdmNy1lOGM4OWNhZGJhMjEiLCJpYXQiOjE3NDQyMjExMDd9.MteOtPubUDCxFMJHCc2ZztfZmr28j2lvKwDIJeu9xYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/api/v1/real-datas/ymd/:ymd",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"real-datas",
+								"ymd",
+								":ymd"
+							],
+							"variable": [
+								{
+									"key": "ymd",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
