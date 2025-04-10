@@ -2,10 +2,10 @@ const { Pool } = require('pg');
 const { v4: uuidv4, validate } = require('uuid');
 const bcrypt = require('bcrypt');
 
-const InvariantError = require('../../exceptions/InvariantError');
-const NotFoundError = require('../../exceptions/NotFoundError');
-const AuthenticationError = require('../../exceptions/AuthenticationError');
-const { getUsersSerializer } = require('../../serializer/user');
+const InvariantError = require('../exceptions/InvariantError');
+const NotFoundError = require('../exceptions/NotFoundError');
+const AuthenticationError = require('../exceptions/AuthenticationError');
+const { getUsersSerializer } = require('../serializer/user');
 
 class UsersService {
   constructor() {

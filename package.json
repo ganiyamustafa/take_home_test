@@ -15,6 +15,7 @@
   "dependencies": {
     "@hapi/hapi": "^20.1.4",
     "@hapi/jwt": "^2.0.1",
+    "axios": "^1.8.4",
     "bcrypt": "^5.0.1",
     "crypto-random-string": "^5.0.0",
     "dotenv": "^10.0.0",
