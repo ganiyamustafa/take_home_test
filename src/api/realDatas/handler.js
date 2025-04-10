@@ -18,7 +18,7 @@ class RealDatasHandler {
 
       return res.send({
         status: 'success',
-        message: 'Success Delete User',
+        message: 'Success Get Data',
         data: data,
       });
     } catch (error) {
@@ -36,7 +36,7 @@ class RealDatasHandler {
 
       return res.send({
         status: 'success',
-        message: 'Success Delete User',
+        message: 'Success Get Data',
         data: data,
       });
     } catch (error) {
@@ -54,7 +54,7 @@ class RealDatasHandler {
 
       return res.send({
         status: 'success',
-        message: 'Success Delete User',
+        message: 'Success Get Data',
         data: data,
       });
     } catch (error) {
