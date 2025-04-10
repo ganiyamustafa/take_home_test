@@ -28,7 +28,7 @@ class RealDatasService {
     const userRawData = rawData.filter(( d ) => {
       switch (filterType) {
         case RealDataFilterType.NAME:
-          return d.split('|')[fieldData.NAMA] === name;
+          return (d.split('|')[fieldData.NAMA] || '').toLowerCase() === name.toLowerCase();
         case RealDataFilterType.NIM:
           return d.split('|')[fieldData.NIM] === nim;
         case RealDataFilterType.YMD:
